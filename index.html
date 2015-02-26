@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">  
+    <script src="svg-pan-zoom-2.3.x/dist/svg-pan-zoom.min.js" charset="utf-8"></script>
+    <meta charset="UTF-8"/>
+  <script>
+      // Don't use window.onLoad like this in production, because it can only listen to one function.
+     window.onload = function() {
+        svgPanZoom('#panzoomthis', {
+          zoomEnabled: true,
+          panEnabled:true,
+          controlIconsEnabled: true
+        });
+      };
+     function panStatus(val){
+       var panZoomTiger = svgPanZoom('#panzoomthis');
+       if(val== true) panZoomTiger.enablePan(); 
+       else panZoomTiger.disablePan();   
+     }
+    </script>
+  </head>
+  <body>
+     <object data="a.svg" type="image/svg+xml" id="alphasvg" width="100%" height="100%"></object> 
+
+    <div id="svgdiv"></div>
+    <div id="container">
+	   <div class="one">
+                <a href="javascript:panStatus(true);" style="text-decoration:none"><span class="font">[Pan]</span></a>  
+                <a href="javascript:panStatus(false);" style="text-decoration:none"><span class="font">[Select]</span></a> <br\>
+                <form>
+		    <input id="query" type="query" size="22" value="query" style="float:left" />
+                    <input id="search" type="submit" value="Search" style="float:right">
+		</form>       
+          </div> 
+          <div class="two font">
+			testing four
+          </div> 
+           
+    </div> 
+  <script>
+
+    var main_chart_svg = d3.select("#svgdiv");
+    d3.text("a.svg", function(error, externalSVGText) {if (error) {console.log(error); return;}
+     
+        main_chart_svg.html(externalSVGText);  
+        main_chart_svg.selectAll("path")
+                 .on("mouseover", function(d) {
+                                    d3.select(this).attr("class", "h");
+                                    var temp = d3.select(this.parentNode).select("title").text(); });
+        d3.select("#alphasvg").remove();
+        d3.select("svg").attr("height","849").attr("width","1651").attr("id", "panzoomthis" ).attr("class","base");
+
+    }); 
+  </script>
+  </body>
+</html>
+
